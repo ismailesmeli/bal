@@ -1,0 +1,1105 @@
+<!-- ============================================================
+     ADMIN.HTML - Yönetim Paneli
+     ============================================================ -->
+<!DOCTYPE html>
+<html lang="tr">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>ALTIN DAMLA • Admin Paneli</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,400;0,600;0,700;1,400&family=Outfit:wght@200;300;400;500;600;700&display=swap" rel="stylesheet">
+  <style>
+    * { margin: 0; padding: 0; box-sizing: border-box; }
+
+    :root {
+      --honey-gold: #e8a700;
+      --honey-amber: #c2740a;
+      --honey-light: #fef3c7;
+      --honey-dark: #3d1f08;
+      --honey-deep: #241304;
+      --cream: #fbf6ec;
+      --cream-dark: #f4ead5;
+      --ink: #1c0f03;
+      --ink-soft: #5c4325;
+      --wp-green: #25d366;
+    }
+
+    body {
+      font-family: 'Outfit', sans-serif;
+      background: var(--cream);
+      color: var(--ink);
+      line-height: 1.6;
+      -webkit-font-smoothing: antialiased;
+      min-height: 100vh;
+    }
+
+    h1, h2, h3 {
+      font-family: 'Cormorant Garamond', serif;
+      font-weight: 700;
+    }
+
+    /* ========== LOGIN SCREEN ========== */
+    #loginScreen {
+      min-height: 100vh;
+      display: grid;
+      place-items: center;
+      padding: 2rem;
+      background:
+        radial-gradient(ellipse 80% 60% at 75% 20%, rgba(255, 200, 60, 0.3) 0%, transparent 60%),
+        radial-gradient(ellipse 60% 50% at 15% 90%, rgba(194, 116, 10, 0.15) 0%, transparent 60%),
+        linear-gradient(160deg, #fdf8ed 0%, #f9efd9 40%, #f4e6c8 100%);
+      position: relative;
+      overflow: hidden;
+    }
+
+    #loginScreen::before {
+      content: '';
+      position: absolute;
+      inset: 0;
+      background-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 400 400' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.8' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)' opacity='0.04'/%3E%3C/svg%3E");
+      pointer-events: none;
+      mix-blend-mode: multiply;
+    }
+
+    .login-card {
+      background: var(--cream);
+      border-radius: 32px;
+      padding: 3rem 2.8rem;
+      width: 100%;
+      max-width: 440px;
+      box-shadow: 0 40px 100px rgba(28, 15, 3, 0.25);
+      position: relative;
+      z-index: 2;
+      overflow: hidden;
+    }
+    .login-card::before {
+      content: '';
+      position: absolute;
+      top: 0; left: 0;
+      width: 100%; height: 5px;
+      background: linear-gradient(90deg, var(--honey-gold), var(--honey-amber));
+    }
+
+    .login-card .login-icon {
+      width: 72px; height: 72px;
+      border-radius: 50%;
+      background: linear-gradient(135deg, var(--honey-gold), var(--honey-amber));
+      display: grid;
+      place-items: center;
+      font-size: 2rem;
+      margin: 0 auto 1.5rem;
+      box-shadow: 0 10px 30px rgba(194, 116, 10, 0.4);
+    }
+    .login-card h2 {
+      font-size: 2rem;
+      color: var(--honey-deep);
+      text-align: center;
+      margin-bottom: 0.5rem;
+    }
+    .login-card .login-sub {
+      text-align: center;
+      color: var(--ink-soft);
+      font-size: 0.92rem;
+      font-weight: 300;
+      margin-bottom: 2rem;
+    }
+    .login-card .form-group { margin-bottom: 1.2rem; }
+    .login-card label {
+      display: block;
+      font-size: 0.82rem;
+      font-weight: 500;
+      color: var(--honey-deep);
+      margin-bottom: 0.5rem;
+      letter-spacing: 0.03em;
+    }
+    .login-card input {
+      width: 100%;
+      padding: 1rem 1.3rem;
+      border: 1.5px solid rgba(61, 31, 8, 0.15);
+      border-radius: 14px;
+      font-family: 'Outfit', sans-serif;
+      font-size: 0.95rem;
+      color: var(--ink);
+      background: #fff;
+      outline: none;
+      transition: border-color 0.3s ease, box-shadow 0.3s ease;
+    }
+    .login-card input:focus {
+      border-color: var(--honey-gold);
+      box-shadow: 0 0 0 4px rgba(232, 167, 0, 0.15);
+    }
+    .login-card .login-btn {
+      width: 100%;
+      background: linear-gradient(135deg, var(--honey-gold), var(--honey-amber));
+      color: #fff;
+      border: none;
+      padding: 1.15rem;
+      border-radius: 14px;
+      font-family: 'Outfit', sans-serif;
+      font-weight: 600;
+      font-size: 1rem;
+      cursor: pointer;
+      margin-top: 0.8rem;
+      transition: all 0.35s ease;
+      box-shadow: 0 10px 30px rgba(194, 116, 10, 0.35);
+    }
+    .login-card .login-btn:hover {
+      transform: translateY(-2px);
+      box-shadow: 0 15px 40px rgba(194, 116, 10, 0.5);
+    }
+    .login-card .login-hint {
+      margin-top: 1.5rem;
+      padding: 0.9rem 1rem;
+      background: rgba(232, 167, 0, 0.08);
+      border-radius: 12px;
+      font-size: 0.82rem;
+      color: var(--ink-soft);
+      text-align: center;
+      font-weight: 300;
+    }
+    .login-card .login-hint strong { color: var(--honey-amber); font-weight: 600; }
+    .login-card .error-msg {
+      display: none;
+      margin-top: 1rem;
+      padding: 0.7rem 1rem;
+      background: rgba(220, 38, 38, 0.1);
+      border: 1px solid rgba(220, 38, 38, 0.3);
+      border-radius: 10px;
+      color: #dc2626;
+      font-size: 0.85rem;
+      text-align: center;
+    }
+    .login-card .error-msg.show { display: block; }
+    .login-card .back-link {
+      display: block;
+      text-align: center;
+      margin-top: 1.5rem;
+      color: var(--ink-soft);
+      font-size: 0.85rem;
+      text-decoration: none;
+      transition: color 0.3s ease;
+    }
+    .login-card .back-link:hover { color: var(--honey-amber); }
+
+    /* ========== ADMIN APP ========== */
+    #adminApp {
+      display: none;
+      min-height: 100vh;
+    }
+    #adminApp.show { display: block; }
+
+    .admin-header {
+      background: linear-gradient(135deg, var(--honey-deep), #1a0d03);
+      color: var(--honey-light);
+      padding: 1.5rem 3rem;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      flex-wrap: wrap;
+      gap: 1rem;
+      position: sticky;
+      top: 0;
+      z-index: 100;
+      box-shadow: 0 4px 20px rgba(28, 15, 3, 0.25);
+    }
+    .admin-header .admin-logo {
+      display: flex;
+      align-items: center;
+      gap: 0.8rem;
+      font-family: 'Cormorant Garamond', serif;
+      font-size: 1.6rem;
+      font-weight: 700;
+      color: var(--honey-gold);
+    }
+    .admin-header .admin-logo .logo-mark {
+      width: 40px; height: 40px;
+      background: linear-gradient(135deg, var(--honey-gold), var(--honey-amber));
+      border-radius: 50%;
+      display: grid;
+      place-items: center;
+      font-size: 1.1rem;
+    }
+    .admin-header .admin-logo small {
+      font-family: 'Outfit', sans-serif;
+      font-size: 0.75rem;
+      font-weight: 400;
+      color: rgba(254, 243, 199, 0.6);
+      letter-spacing: 0.15em;
+      text-transform: uppercase;
+      display: block;
+      margin-top: -0.3rem;
+    }
+    .admin-header .admin-actions {
+      display: flex;
+      gap: 0.7rem;
+      flex-wrap: wrap;
+    }
+    .admin-header .admin-btn {
+      background: rgba(255,255,255,0.1);
+      border: 1px solid rgba(232, 167, 0, 0.4);
+      color: var(--honey-light);
+      padding: 0.7rem 1.4rem;
+      border-radius: 50px;
+      font-family: 'Outfit', sans-serif;
+      font-weight: 500;
+      font-size: 0.85rem;
+      cursor: pointer;
+      transition: all 0.3s ease;
+      display: inline-flex;
+      align-items: center;
+      gap: 0.5rem;
+      text-decoration: none;
+    }
+    .admin-header .admin-btn:hover {
+      background: var(--honey-gold);
+      color: var(--honey-deep);
+      border-color: var(--honey-gold);
+    }
+    .admin-header .admin-btn.logout { border-color: rgba(220, 38, 38, 0.5); }
+    .admin-header .admin-btn.logout:hover { background: #dc2626; color: #fff; border-color: #dc2626; }
+
+    .admin-main {
+      max-width: 1300px;
+      margin: 0 auto;
+      padding: 3rem;
+    }
+
+    /* ========== STATS ========== */
+    .stats-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+      gap: 1.2rem;
+      margin-bottom: 3rem;
+    }
+    .stat-card {
+      background: #fff;
+      border-radius: 20px;
+      padding: 1.6rem;
+      box-shadow: 0 4px 20px rgba(61, 31, 8, 0.05);
+      border: 1px solid rgba(61, 31, 8, 0.05);
+      position: relative;
+      overflow: hidden;
+    }
+    .stat-card::before {
+      content: '';
+      position: absolute;
+      top: 0; left: 0;
+      width: 4px; height: 100%;
+      background: linear-gradient(180deg, var(--honey-gold), var(--honey-amber));
+    }
+    .stat-card .sc-icon {
+      font-size: 1.8rem;
+      margin-bottom: 0.7rem;
+    }
+    .stat-card .sc-label {
+      font-size: 0.78rem;
+      text-transform: uppercase;
+      letter-spacing: 0.1em;
+      color: var(--ink-soft);
+      margin-bottom: 0.5rem;
+      font-weight: 500;
+    }
+    .stat-card .sc-value {
+      font-family: 'Cormorant Garamond', serif;
+      font-size: 2.2rem;
+      font-weight: 700;
+      color: var(--honey-deep);
+      line-height: 1;
+    }
+
+    /* ========== TABS ========== */
+    .admin-tabs {
+      display: flex;
+      gap: 0.5rem;
+      margin-bottom: 2rem;
+      border-bottom: 2px solid rgba(61, 31, 8, 0.1);
+      flex-wrap: wrap;
+    }
+    .admin-tab {
+      background: transparent;
+      border: none;
+      padding: 0.9rem 1.5rem;
+      font-family: 'Outfit', sans-serif;
+      font-weight: 500;
+      font-size: 0.95rem;
+      color: var(--ink-soft);
+      cursor: pointer;
+      transition: all 0.3s ease;
+      border-bottom: 3px solid transparent;
+      margin-bottom: -2px;
+      display: inline-flex;
+      align-items: center;
+      gap: 0.5rem;
+    }
+    .admin-tab:hover { color: var(--honey-amber); }
+    .admin-tab.active {
+      color: var(--honey-deep);
+      border-bottom-color: var(--honey-gold);
+      font-weight: 600;
+    }
+
+    .tab-panel { display: none; }
+    .tab-panel.active { display: block; }
+
+    /* ========== SECTION TITLE ========== */
+    .section-title-admin {
+      font-size: 1.5rem;
+      color: var(--honey-deep);
+      margin-bottom: 1.5rem;
+      display: flex;
+      align-items: center;
+      gap: 0.6rem;
+    }
+
+    /* ========== PRODUCT TABLE ========== */
+    .product-table {
+      display: flex;
+      flex-direction: column;
+      gap: 0.8rem;
+    }
+    .product-row {
+      background: #fff;
+      border-radius: 16px;
+      padding: 1.2rem 1.4rem;
+      display: grid;
+      grid-template-columns: 60px 1.6fr 1fr 1.2fr auto;
+      gap: 1rem;
+      align-items: center;
+      box-shadow: 0 2px 10px rgba(61, 31, 8, 0.04);
+      border: 1px solid rgba(61, 31, 8, 0.05);
+      transition: border-color 0.3s ease, box-shadow 0.3s ease;
+    }
+    .product-row:hover {
+      border-color: rgba(232, 167, 0, 0.3);
+      box-shadow: 0 6px 20px rgba(61, 31, 8, 0.08);
+    }
+    .product-row .pr-emoji {
+      font-size: 2rem;
+      text-align: center;
+    }
+    .product-row .pr-field label {
+      display: block;
+      font-size: 0.7rem;
+      text-transform: uppercase;
+      letter-spacing: 0.08em;
+      color: var(--ink-soft);
+      margin-bottom: 0.3rem;
+      font-weight: 500;
+    }
+    .product-row .pr-field input {
+      width: 100%;
+      padding: 0.55rem 0.8rem;
+      border: 1px solid rgba(61, 31, 8, 0.15);
+      border-radius: 8px;
+      font-family: 'Outfit', sans-serif;
+      font-size: 0.9rem;
+      color: var(--ink);
+      background: var(--cream);
+      outline: none;
+      transition: border-color 0.3s ease;
+    }
+    .product-row .pr-field input:focus {
+      border-color: var(--honey-gold);
+      background: #fff;
+    }
+    .product-row .pr-actions {
+      display: flex;
+      gap: 0.4rem;
+    }
+    .pr-btn {
+      width: 38px; height: 38px;
+      border-radius: 10px;
+      border: none;
+      cursor: pointer;
+      display: grid;
+      place-items: center;
+      font-size: 0.95rem;
+      transition: all 0.25s ease;
+    }
+    .pr-btn.save { background: rgba(22, 163, 74, 0.1); color: #16a34a; }
+    .pr-btn.save:hover { background: #16a34a; color: #fff; }
+    .pr-btn.delete { background: rgba(220, 38, 38, 0.1); color: #dc2626; }
+    .pr-btn.delete:hover { background: #dc2626; color: #fff; }
+
+    /* ========== ADD FORM ========== */
+    .add-form {
+      background: linear-gradient(135deg, rgba(232, 167, 0, 0.06), rgba(194, 116, 10, 0.04));
+      border: 1.5px dashed rgba(194, 116, 10, 0.3);
+      border-radius: 20px;
+      padding: 2rem;
+      margin-top: 2rem;
+    }
+    .add-form h4 {
+      font-size: 1.2rem;
+      color: var(--honey-deep);
+      margin-bottom: 1.2rem;
+      font-family: 'Cormorant Garamond', serif;
+      font-weight: 700;
+      display: flex;
+      align-items: center;
+      gap: 0.5rem;
+    }
+    .add-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(150px, 1fr));
+      gap: 0.9rem;
+      margin-bottom: 1.2rem;
+    }
+    .af-field label {
+      display: block;
+      font-size: 0.72rem;
+      text-transform: uppercase;
+      letter-spacing: 0.08em;
+      color: var(--ink-soft);
+      margin-bottom: 0.35rem;
+      font-weight: 500;
+    }
+    .af-field input {
+      width: 100%;
+      padding: 0.7rem 0.9rem;
+      border: 1px solid rgba(61, 31, 8, 0.15);
+      border-radius: 10px;
+      font-family: 'Outfit', sans-serif;
+      font-size: 0.9rem;
+      background: #fff;
+      outline: none;
+      transition: border-color 0.3s ease;
+    }
+    .af-field input:focus { border-color: var(--honey-gold); }
+    .add-btn {
+      background: linear-gradient(135deg, var(--honey-gold), var(--honey-amber));
+      color: #fff;
+      border: none;
+      padding: 0.9rem 2rem;
+      border-radius: 12px;
+      font-family: 'Outfit', sans-serif;
+      font-weight: 600;
+      font-size: 0.95rem;
+      cursor: pointer;
+      transition: all 0.3s ease;
+      display: inline-flex;
+      align-items: center;
+      gap: 0.5rem;
+      box-shadow: 0 6px 20px rgba(194, 116, 10, 0.3);
+    }
+    .add-btn:hover {
+      transform: translateY(-2px);
+      box-shadow: 0 10px 30px rgba(194, 116, 10, 0.45);
+    }
+
+    /* ========== SETTINGS FORM ========== */
+    .settings-form {
+      background: #fff;
+      border-radius: 24px;
+      padding: 2.5rem;
+      box-shadow: 0 4px 20px rgba(61, 31, 8, 0.05);
+      border: 1px solid rgba(61, 31, 8, 0.05);
+      max-width: 700px;
+    }
+    .settings-form .sf-group { margin-bottom: 1.5rem; }
+    .settings-form label {
+      display: block;
+      font-size: 0.82rem;
+      font-weight: 600;
+      color: var(--honey-deep);
+      margin-bottom: 0.5rem;
+      letter-spacing: 0.03em;
+    }
+    .settings-form .sf-hint {
+      font-size: 0.78rem;
+      color: var(--ink-soft);
+      font-weight: 300;
+      margin-bottom: 0.6rem;
+    }
+    .settings-form input {
+      width: 100%;
+      padding: 0.95rem 1.2rem;
+      border: 1.5px solid rgba(61, 31, 8, 0.15);
+      border-radius: 12px;
+      font-family: 'Outfit', sans-serif;
+      font-size: 0.95rem;
+      color: var(--ink);
+      background: var(--cream);
+      outline: none;
+      transition: border-color 0.3s ease, box-shadow 0.3s ease;
+    }
+    .settings-form input:focus {
+      border-color: var(--honey-gold);
+      background: #fff;
+      box-shadow: 0 0 0 4px rgba(232, 167, 0, 0.15);
+    }
+    .settings-form .save-settings-btn {
+      background: linear-gradient(135deg, var(--honey-gold), var(--honey-amber));
+      color: #fff;
+      border: none;
+      padding: 1rem 2.5rem;
+      border-radius: 12px;
+      font-family: 'Outfit', sans-serif;
+      font-weight: 600;
+      font-size: 1rem;
+      cursor: pointer;
+      transition: all 0.3s ease;
+      box-shadow: 0 6px 20px rgba(194, 116, 10, 0.3);
+      display: inline-flex;
+      align-items: center;
+      gap: 0.5rem;
+    }
+    .settings-form .save-settings-btn:hover {
+      transform: translateY(-2px);
+      box-shadow: 0 10px 30px rgba(194, 116, 10, 0.45);
+    }
+
+    .wp-preview-box {
+      background: linear-gradient(135deg, #e7ffef, #d4fce0);
+      border: 1.5px solid rgba(37, 211, 102, 0.3);
+      border-radius: 16px;
+      padding: 1.4rem;
+      margin-top: 1.5rem;
+      display: flex;
+      align-items: flex-start;
+      gap: 1rem;
+    }
+    .wp-preview-box .wp-icon {
+      font-size: 1.8rem;
+      flex-shrink: 0;
+    }
+    .wp-preview-box .wp-text h5 {
+      font-size: 0.95rem;
+      color: #0f5132;
+      margin-bottom: 0.4rem;
+      font-weight: 600;
+      font-family: 'Outfit', sans-serif;
+    }
+    .wp-preview-box .wp-text p {
+      font-size: 0.85rem;
+      color: #166534;
+      font-weight: 300;
+      line-height: 1.6;
+    }
+    .wp-preview-box .wp-text a {
+      color: #128c7e;
+      font-weight: 500;
+      text-decoration: none;
+    }
+    .wp-preview-box .wp-text a:hover { text-decoration: underline; }
+
+    /* ========== TOAST ========== */
+    .toast {
+      position: fixed;
+      bottom: 2rem;
+      left: 50%;
+      transform: translateX(-50%) translateY(150%);
+      background: var(--honey-deep);
+      color: var(--honey-light);
+      padding: 1rem 1.8rem;
+      border-radius: 50px;
+      font-size: 0.92rem;
+      font-weight: 400;
+      display: flex;
+      align-items: center;
+      gap: 0.7rem;
+      box-shadow: 0 20px 50px rgba(28, 15, 3, 0.35);
+      z-index: 2000;
+      transition: transform 0.4s cubic-bezier(0.22, 1, 0.36, 1);
+      border: 1px solid rgba(232, 167, 0, 0.3);
+    }
+    .toast.show { transform: translateX(-50%) translateY(0); }
+    .toast .toast-icon {
+      width: 28px; height: 28px;
+      border-radius: 50%;
+      background: var(--honey-gold);
+      color: var(--honey-deep);
+      display: grid;
+      place-items: center;
+      font-size: 0.9rem;
+      flex-shrink: 0;
+    }
+    .toast.error .toast-icon { background: #dc2626; color: #fff; }
+
+    /* ========== RESPONSIVE ========== */
+    @media (max-width: 900px) {
+      .product-row {
+        grid-template-columns: 48px 1fr auto;
+        gap: 0.7rem;
+      }
+      .product-row .pr-field:nth-child(3),
+      .product-row .pr-field:nth-child(4) { display: none; }
+      .admin-header { padding: 1rem 1.5rem; }
+      .admin-main { padding: 1.5rem; }
+    }
+
+    @media (max-width: 600px) {
+      .login-card { padding: 2.2rem 1.8rem; }
+      .admin-header .admin-logo { font-size: 1.3rem; }
+      .admin-header .admin-logo .logo-mark { width: 34px; height: 34px; }
+      .admin-header .admin-btn { padding: 0.6rem 1rem; font-size: 0.78rem; }
+      .admin-tab { padding: 0.7rem 1rem; font-size: 0.85rem; }
+      .settings-form { padding: 1.6rem; }
+      .add-form { padding: 1.4rem; }
+    }
+  </style>
+</head>
+<body>
+
+  <!-- ============================================================
+       LOGIN SCREEN
+       ============================================================ -->
+  <div id="loginScreen">
+    <div class="login-card">
+      <div class="login-icon">🔐</div>
+      <h2>Admin Girişi</h2>
+      <p class="login-sub">Yönetim paneline erişmek için giriş yapın</p>
+      <form id="loginForm">
+        <div class="form-group">
+          <label for="adminUser">Kullanıcı Adı</label>
+          <input type="text" id="adminUser" placeholder="admin" autocomplete="username" required>
+        </div>
+        <div class="form-group">
+          <label for="adminPass">Şifre</label>
+          <input type="password" id="adminPass" placeholder="••••••••" autocomplete="current-password" required>
+        </div>
+        <button type="submit" class="login-btn">Giriş Yap</button>
+        <div class="error-msg" id="loginError">❌ Kullanıcı adı veya şifre hatalı</div>
+      </form>
+      <div class="login-hint">
+        Demo giriş: <strong>admin</strong> / <strong>altin2026</strong>
+      </div>
+      <a href="index.html" class="back-link">← Ana Sayfaya Dön</a>
+    </div>
+  </div>
+
+  <!-- ============================================================
+       ADMIN APP
+       ============================================================ -->
+  <div id="adminApp">
+
+    <header class="admin-header">
+      <div class="admin-logo">
+        <div class="logo-mark">🐝</div>
+        <div>
+          ALTIN DAMLA
+          <small>Yönetim Paneli</small>
+        </div>
+      </div>
+      <div class="admin-actions">
+        <a href="index.html" class="admin-btn" target="_blank">🏠 Siteyi Gör</a>
+        <button class="admin-btn logout" id="logoutBtn">🚪 Çıkış</button>
+      </div>
+    </header>
+
+    <main class="admin-main">
+
+      <!-- Stats -->
+      <div class="stats-grid">
+        <div class="stat-card">
+          <div class="sc-icon">📦</div>
+          <div class="sc-label">Toplam Ürün</div>
+          <div class="sc-value" id="statTotalProducts">0</div>
+        </div>
+        <div class="stat-card">
+          <div class="sc-icon">💰</div>
+          <div class="sc-label">Ortalama Fiyat</div>
+          <div class="sc-value" id="statAvgPrice">₺0</div>
+        </div>
+        <div class="stat-card">
+          <div class="sc-icon">📈</div>
+          <div class="sc-label">En Yüksek</div>
+          <div class="sc-value" id="statMaxPrice">₺0</div>
+        </div>
+        <div class="stat-card">
+          <div class="sc-icon">📉</div>
+          <div class="sc-label">En Düşük</div>
+          <div class="sc-value" id="statMinPrice">₺0</div>
+        </div>
+      </div>
+
+      <!-- Tabs -->
+      <div class="admin-tabs">
+        <button class="admin-tab active" data-tab="products">📦 Ürünler</button>
+        <button class="admin-tab" data-tab="settings">⚙️ Ayarlar & WhatsApp</button>
+      </div>
+
+      <!-- TAB: PRODUCTS -->
+      <div class="tab-panel active" id="tab-products">
+        <h3 class="section-title-admin">📦 Ürün Yönetimi</h3>
+        <div class="product-table" id="adminProductList"></div>
+
+        <div class="add-form">
+          <h4>➕ Yeni Ürün Ekle</h4>
+          <div class="add-grid">
+            <div class="af-field">
+              <label>Emoji</label>
+              <input type="text" id="newEmoji" placeholder="🍯" maxlength="4">
+            </div>
+            <div class="af-field">
+              <label>Ürün Adı</label>
+              <input type="text" id="newName" placeholder="Örn: Portakal Balı">
+            </div>
+            <div class="af-field">
+              <label>Fiyat (₺)</label>
+              <input type="number" id="newPrice" placeholder="399" min="0" step="1">
+            </div>
+            <div class="af-field">
+              <label>Kategori</label>
+              <input type="text" id="newTag" placeholder="Çiçek Balı">
+            </div>
+          </div>
+          <button class="add-btn" id="addProductBtn">➕ Ürünü Ekle</button>
+        </div>
+      </div>
+
+      <!-- TAB: SETTINGS -->
+      <div class="tab-panel" id="tab-settings">
+        <h3 class="section-title-admin">⚙️ İletişim & WhatsApp Ayarları</h3>
+        <form class="settings-form" id="settingsForm">
+          <div class="sf-group">
+            <label for="settingPhone">📞 Görünen Telefon Numarası</label>
+            <p class="sf-hint">Sitede footer'da görünecek telefon numarası</p>
+            <input type="tel" id="settingPhone" placeholder="+90 212 123 45 67">
+          </div>
+
+          <div class="sf-group">
+            <label for="settingWhatsapp">💬 WhatsApp Numarası (Sipariş Alımı)</label>
+            <p class="sf-hint">Ülke kodu ile birlikte, boşluk ve + olmadan. Örn: <code>905551234567</code></p>
+            <input type="tel" id="settingWhatsapp" placeholder="905551234567" pattern="[0-9]+">
+          </div>
+
+          <div class="sf-group">
+            <label for="settingEmail">✉️ İletişim E-posta Adresi</label>
+            <p class="sf-hint">Müşterilerin size ulaşacağı e-posta</p>
+            <input type="email" id="settingEmail" placeholder="info@altindamla.com">
+          </div>
+
+          <button type="submit" class="save-settings-btn">💾 Ayarları Kaydet</button>
+
+          <div class="wp-preview-box">
+            <div class="wp-icon">💬</div>
+            <div class="wp-text">
+              <h5>WhatsApp Sipariş Önizleme</h5>
+              <p>Müşteriler sepetlerinde "WhatsApp ile Sipariş Ver" butonuna bastığında, sipariş detayları otomatik olarak <strong id="wpPreviewNumber">+90 555 123 45 67</strong> numarasına WhatsApp mesajı olarak gönderilir. Siparişi onaylamak için sadece WhatsApp'tan "Onayla" yazmanız yeterli.</p>
+            </div>
+          </div>
+        </form>
+      </div>
+
+    </main>
+  </div>
+
+  <!-- TOAST -->
+  <div class="toast" id="toast">
+    <div class="toast-icon">✓</div>
+    <span id="toastText">Kaydedildi</span>
+  </div>
+
+  <script>
+    /* ================================================================
+       CONFIG
+    ================================================================ */
+    const ADMIN_CREDS = { username: 'admin', password: 'altin2026' };
+    const AUTH_KEY = 'altindamla_admin_auth';
+    const PRODUCTS_KEY = 'altindamla_products_v1';
+    const SETTINGS_KEY = 'altindamla_settings_v1';
+
+    const DEFAULT_PRODUCTS = [
+      { id: 'cicek', name: 'Yayla Çiçek Balı', price: 349, emoji: '🍯', tag: 'Çiçek Balı', desc: 'Anadolu yaylalarının zengin çiçek florasından süzülen, hafif ve aromatik bir lezzet.', blob: 'rgba(255,200,60,0.55)' },
+      { id: 'cam', name: 'Muğla Çam Balı', price: 449, emoji: '🌰', tag: 'Çam Balı', desc: 'Çam ormanlarının koyu renkli, yoğun kıvamlı ve mineral zengini eşsiz balı.', blob: 'rgba(180,100,20,0.45)' },
+      { id: 'kestane', name: 'Kestane Balı', price: 529, emoji: '🌿', tag: 'Kestane Balı', desc: 'Kestane ağaçlarının çiçeklerinden gelen, kendine özgü acımsı ve güçlü lezzet.', blob: 'rgba(140,180,80,0.35)' },
+      { id: 'lavanta', name: 'Lavanta Balı', price: 599, emoji: '🌸', tag: 'Lavanta Balı', desc: 'Lavanta tarlalarından gelen, çiçeksi aroması ve berrak rengiyle öne çıkan bal.', blob: 'rgba(200,120,200,0.35)' },
+    ];
+
+    const DEFAULT_SETTINGS = {
+      phone: '+90 212 123 45 67',
+      whatsapp: '905551234567',
+      email: 'info@altindamla.com'
+    };
+
+    let products = [];
+    let settings = { ...DEFAULT_SETTINGS };
+
+    /* ================================================================
+       STORAGE
+    ================================================================ */
+    function loadProducts() {
+      try {
+        const raw = localStorage.getItem(PRODUCTS_KEY);
+        products = raw ? JSON.parse(raw) : JSON.parse(JSON.stringify(DEFAULT_PRODUCTS));
+      } catch (e) {
+        products = JSON.parse(JSON.stringify(DEFAULT_PRODUCTS));
+      }
+    }
+    function saveProducts() {
+      try { localStorage.setItem(PRODUCTS_KEY, JSON.stringify(products)); } catch (e) {}
+    }
+
+    function loadSettings() {
+      try {
+        const raw = localStorage.getItem(SETTINGS_KEY);
+        settings = raw ? { ...DEFAULT_SETTINGS, ...JSON.parse(raw) } : { ...DEFAULT_SETTINGS };
+      } catch (e) {
+        settings = { ...DEFAULT_SETTINGS };
+      }
+    }
+    function saveSettings() {
+      try { localStorage.setItem(SETTINGS_KEY, JSON.stringify(settings)); } catch (e) {}
+    }
+
+    function formatTL(n) { return '₺' + n.toLocaleString('tr-TR'); }
+
+    function escapeAttr(str) {
+      return String(str).replace(/"/g, '&quot;').replace(/</g, '&lt;').replace(/>/g, '&gt;');
+    }
+
+    function slugify(text) {
+      return text.toString().toLowerCase()
+        .replace(/\s+/g, '-')
+        .replace(/[^\w\-]+/g, '')
+        .replace(/\-\-+/g, '-')
+        .replace(/^-+|-+$/g, '') || 'product-' + Date.now();
+    }
+
+    /* ================================================================
+       AUTH
+    ================================================================ */
+    function isLoggedIn() {
+      return sessionStorage.getItem(AUTH_KEY) === 'true';
+    }
+    function login() {
+      sessionStorage.setItem(AUTH_KEY, 'true');
+      showApp();
+    }
+    function logout() {
+      sessionStorage.removeItem(AUTH_KEY);
+      location.reload();
+    }
+
+    function showApp() {
+      document.getElementById('loginScreen').style.display = 'none';
+      document.getElementById('adminApp').classList.add('show');
+      loadSettings();
+      renderSettingsForm();
+      renderProductList();
+      renderStats();
+    }
+
+    /* ================================================================
+       LOGIN HANDLER
+    ================================================================ */
+    document.getElementById('loginForm').addEventListener('submit', (e) => {
+      e.preventDefault();
+      const user = document.getElementById('adminUser').value.trim();
+      const pass = document.getElementById('adminPass').value;
+      const errorEl = document.getElementById('loginError');
+
+      if (user === ADMIN_CREDS.username && pass === ADMIN_CREDS.password) {
+        login();
+      } else {
+        errorEl.classList.add('show');
+        setTimeout(() => errorEl.classList.remove('show'), 3000);
+      }
+    });
+
+    /* ================================================================
+       TOAST
+    ================================================================ */
+    let toastTimer = null;
+    function showToast(msg, isError = false) {
+      const toast = document.getElementById('toast');
+      document.getElementById('toastText').textContent = msg;
+      toast.classList.toggle('error', isError);
+      toast.querySelector('.toast-icon').textContent = isError ? '✕' : '✓';
+      toast.classList.add('show');
+      clearTimeout(toastTimer);
+      toastTimer = setTimeout(() => toast.classList.remove('show'), 2500);
+    }
+
+    /* ================================================================
+       STATS
+    ================================================================ */
+    function renderStats() {
+      const total = products.length;
+      const prices = products.map(p => p.price);
+      const avg = total ? Math.round(prices.reduce((a, b) => a + b, 0) / total) : 0;
+      const max = total ? Math.max(...prices) : 0;
+      const min = total ? Math.min(...prices) : 0;
+
+      document.getElementById('statTotalProducts').textContent = total;
+      document.getElementById('statAvgPrice').textContent = formatTL(avg);
+      document.getElementById('statMaxPrice').textContent = formatTL(max);
+      document.getElementById('statMinPrice').textContent = formatTL(min);
+    }
+
+    /* ================================================================
+       PRODUCT LIST
+    ================================================================ */
+    function renderProductList() {
+      const list = document.getElementById('adminProductList');
+      if (products.length === 0) {
+        list.innerHTML = `<div style="text-align:center; padding:2rem; color:var(--ink-soft); font-size:0.9rem;">Henüz ürün yok. Aşağıdan ekleyin.</div>`;
+        return;
+      }
+
+      list.innerHTML = products.map((p) => `
+        <div class="product-row" data-id="${p.id}">
+          <div class="pr-emoji">${p.emoji}</div>
+          <div class="pr-field">
+            <label>Ürün Adı</label>
+            <input type="text" data-field="name" value="${escapeAttr(p.name)}">
+          </div>
+          <div class="pr-field">
+            <label>Fiyat (₺)</label>
+            <input type="number" data-field="price" value="${p.price}" min="0" step="1">
+          </div>
+          <div class="pr-field">
+            <label>Kategori</label>
+            <input type="text" data-field="tag" value="${escapeAttr(p.tag || '')}">
+          </div>
+          <div class="pr-actions">
+            <button class="pr-btn save" data-action="save" title="Kaydet">💾</button>
+            <button class="pr-btn delete" data-action="delete" title="Sil">🗑</button>
+          </div>
+        </div>
+      `).join('');
+
+      list.querySelectorAll('.product-row').forEach(row => {
+        const id = row.dataset.id;
+        row.querySelector('[data-action="save"]').addEventListener('click', () => {
+          const nameInput = row.querySelector('input[data-field="name"]');
+          const priceInput = row.querySelector('input[data-field="price"]');
+          const tagInput = row.querySelector('input[data-field="tag"]');
+
+          const newName = nameInput.value.trim();
+          const newPrice = parseFloat(priceInput.value);
+          const newTag = tagInput.value.trim();
+
+          if (!newName) { showToast('Ürün adı boş olamaz', true); return; }
+          if (isNaN(newPrice) || newPrice < 0) { showToast('Geçerli bir fiyat girin', true); return; }
+
+          const product = products.find(p => p.id === id);
+          if (product) {
+            product.name = newName;
+            product.price = newPrice;
+            product.tag = newTag || product.tag;
+            saveProducts();
+            renderStats();
+            showToast('Ürün güncellendi ✓');
+          }
+        });
+
+        row.querySelector('[data-action="delete"]').addEventListener('click', () => {
+          const product = products.find(p => p.id === id);
+          if (!confirm(`"${product ? product.name : 'Ürün'}" silinsin mi?`)) return;
+          products = products.filter(p => p.id !== id);
+          saveProducts();
+          renderProductList();
+          renderStats();
+          showToast('Ürün silindi');
+        });
+      });
+    }
+
+    /* ================================================================
+       ADD PRODUCT
+    ================================================================ */
+    document.getElementById('addProductBtn').addEventListener('click', () => {
+      const emoji = document.getElementById('newEmoji').value.trim() || '🍯';
+      const name = document.getElementById('newName').value.trim();
+      const price = parseFloat(document.getElementById('newPrice').value);
+      const tag = document.getElementById('newTag').value.trim() || 'Bal';
+
+      if (!name) { showToast('Ürün adı gerekli', true); return; }
+      if (isNaN(price) || price < 0) { showToast('Geçerli bir fiyat girin', true); return; }
+
+      const newId = slugify(name) + '-' + Date.now().toString(36);
+
+      products.push({
+        id: newId,
+        name: name,
+        price: price,
+        emoji: emoji,
+        tag: tag,
+        desc: 'Doğanın en saf lezzeti.',
+        blob: 'rgba(232,167,0,0.4)'
+      });
+
+      saveProducts();
+      renderProductList();
+      renderStats();
+
+      document.getElementById('newEmoji').value = '';
+      document.getElementById('newName').value = '';
+      document.getElementById('newPrice').value = '';
+      document.getElementById('newTag').value = '';
+
+      showToast('Yeni ürün eklendi ✓');
+    });
+
+    /* ================================================================
+       SETTINGS FORM
+    ================================================================ */
+    function renderSettingsForm() {
+      document.getElementById('settingPhone').value = settings.phone;
+      document.getElementById('settingWhatsapp').value = settings.whatsapp;
+      document.getElementById('settingEmail').value = settings.email;
+      updateWpPreview();
+    }
+
+    function updateWpPreview() {
+      const num = document.getElementById('settingWhatsapp').value.replace(/\D/g, '');
+      const display = num.length > 10
+        ? '+' + num.slice(0, 2) + ' ' + num.slice(2, 5) + ' ' + num.slice(5, 8) + ' ' + num.slice(8, 10) + ' ' + num.slice(10)
+        : num || '—';
+      document.getElementById('wpPreviewNumber').textContent = display;
+    }
+
+    document.getElementById('settingWhatsapp').addEventListener('input', updateWpPreview);
+
+    document.getElementById('settingsForm').addEventListener('submit', (e) => {
+      e.preventDefault();
+      const phone = document.getElementById('settingPhone').value.trim();
+      const whatsapp = document.getElementById('settingWhatsapp').value.replace(/\D/g, '');
+      const email = document.getElementById('settingEmail').value.trim();
+
+      if (!phone) { showToast('Telefon numarası gerekli', true); return; }
+      if (!whatsapp || whatsapp.length < 10) { showToast('Geçerli bir WhatsApp numarası girin (en az 10 rakam)', true); return; }
+      if (!email) { showToast('E-posta gerekli', true); return; }
+
+      settings.phone = phone;
+      settings.whatsapp = whatsapp;
+      settings.email = email;
+      saveSettings();
+      showToast('Ayarlar kaydedildi ✓');
+    });
+
+    /* ================================================================
+       TABS
+    ================================================================ */
+    document.querySelectorAll('.admin-tab').forEach(tab => {
+      tab.addEventListener('click', () => {
+        document.querySelectorAll('.admin-tab').forEach(t => t.classList.remove('active'));
+        document.querySelectorAll('.tab-panel').forEach(p => p.classList.remove('active'));
+        tab.classList.add('active');
+        document.getElementById('tab-' + tab.dataset.tab).classList.add('active');
+      });
+    });
+
+    /* ================================================================
+       LOGOUT
+    ================================================================ */
+    document.getElementById('logoutBtn').addEventListener('click', () => {
+      if (confirm('Çıkış yapmak istediğinizden emin misiniz?')) logout();
+    });
+
+    /* ================================================================
+       INIT
+    ================================================================ */
+    loadProducts();
+    loadSettings();
+
+    if (isLoggedIn()) {
+      showApp();
+    }
+  </script>
+</body>
+</html>
